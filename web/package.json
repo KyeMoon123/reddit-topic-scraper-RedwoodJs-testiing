@@ -13,11 +13,23 @@
     ]
   },
   "dependencies": {
-    "@redwoodjs/forms": "2.2.0",
-    "@redwoodjs/router": "2.2.0",
-    "@redwoodjs/web": "2.2.0",
+    "@auth0/auth0-spa-js": "^1.22.4",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.6",
+    "@redwoodjs/auth": "^3.0.1",
+    "@redwoodjs/forms": "^3.0.1",
+    "@redwoodjs/router": "^3.0.1",
+    "@redwoodjs/web": "^3.0.1",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "postcss": "^8.4.16",
+    "postcss-loader": "^7.0.1",
+    "tailwindcss": "^3.1.8"
   }
 }

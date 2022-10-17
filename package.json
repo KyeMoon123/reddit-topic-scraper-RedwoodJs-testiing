@@ -8,8 +8,9 @@
     ]
   },
   "devDependencies": {
-    "@redwoodjs/core": "2.2.0",
-    "@types/node": "^18.7.2"
+    "@redwoodjs/core": "^3.0.1",
+    "@types/node": "^18.7.2",
+    "prettier-plugin-tailwindcss": "^0.1.13"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -24,6 +25,12 @@
   },
   "packageManager": "yarn@3.2.1",
   "dependencies": {
-    "snoowrap": "^1.23.0"
+    "@auth0/auth0-react": "^1.11.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.6",
+    "axios": "^0.24.0",
+    "daisyui": "^2.31.0",
+    "dayjs": "^1.11.5"
   }
 }

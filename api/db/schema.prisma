@@ -1,18 +1,60 @@
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = "native"
+  binaryTargets = ["native"]
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:SDKwaz0hOtlUx8qG@db.tgaazjhcwjvpxkzreret.supabase.co:5432/postgres"
+}
+
+model Subreddit {
+  id           Int                 @id @default(autoincrement())
+  channel_name String              @unique
+  ext_id String  @unique
+  search_name String @unique
+  topics       SubredditsOnTopic[]
+}
+
+model Topic {
+  id          Int                  @id @default(autoincrement())
+  name        String
+  description String
+  userId      String
+  subreddits  SubredditsOnTopic[]
+  recommended RecommendedOnTopic[]
+}
+
+model SubredditsOnTopic {
+  id          Int       @id @default(autoincrement())
+  topicId     Int
+  subredditId String
+  subreddit   Subreddit @relation(fields: [subredditId], references: [ext_id])
+  topic       Topic     @relation(fields: [topicId], references: [id])
+
+  @@unique([topicId, subredditId])
+}
+
+model Recommended {
+  id        Int                  @id @default(autoincrement())
+  reddit_id String
+  channel_name String
+  channel_id String
+  title     String
+  self_text String
+  url       String
+  date_created String
+  score     String
+  topics    RecommendedOnTopic[]
+}
+
+model RecommendedOnTopic {
+  id            Int         @id @default(autoincrement())
+  topicId       Int
+  recommendedId Int
+  date_recommended String
+  recommended   Recommended @relation(fields: [recommendedId], references: [id])
+  topic         Topic       @relation(fields: [topicId], references: [id])
+
+  @@unique([topicId, recommendedId])
 }
