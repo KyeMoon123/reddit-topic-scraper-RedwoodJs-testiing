@@ -60,7 +60,7 @@ const HomePage = () => {
       </div>
       <div className="flex flex-col items-center p-12">
         <h4 className="py-2 text-2xl font-semibold text-primary">Features</h4>
-        <h1 className="text-7xl font-bold">Why DaisyAi?</h1>
+        <h1 className="text-7xl font-bold">Why Daisy?</h1>
       </div>
       <div className=" flex   flex-col items-center">
         <div className="hero min-h-full   ">

@@ -1,3 +1,4 @@
+from genericpath import exists
 import logging
 import asyncpraw
 import redis
@@ -13,42 +14,40 @@ load_dotenv()  # take environment variables from .env.
 logger = logging.getLogger(__name__)
 COLLECTION_NAME = 'Messages'
 
-url: str = os.environ.get("SUPABASE_URL")
-key: str = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
 
-async def getNew():
+async def getNew(request):
+    db = request.database
 
-    r = redis.Redis(
-    host=os.environ.get("REDIS_HOST"),
-    port=os.environ.get("REDIS_PORT"),
-    password=os.environ.get("REDIS_PASSWORD"))
+
 
     reddit = asyncpraw.Reddit(
     client_id="lhCAjKV2lNlVn0msO6isUQ",
     client_secret="sDVFmyCNxZSrZ6_Tod19dvqcv3az6w",
     user_agent="Ironman",
     )
+    #milvus connect
     connections.connect("default", host="localhost", port="19530")
 
     logger.info("Starting Reddit fetch process ")
-    channels = supabase.table("Subreddit").select('*').execute()
+    channels = list(db['subreddits'].find())
+    logger.info(channels)
     collection =  Collection(COLLECTION_NAME)
-
-    for channel in channels.data:
+    dbmessages=[]
+    for channel in channels:
         channelName = channel['search_name']
-        channelId = channel["id"]
+        channelId = channel["_id"]
         partitonId = channel["ext_id"]
         ids=[]
         messages=[]
-        embeddings=[]
-        array = getExistingSubmissionsArray(channelId=channelId,r=r)
+
+        #embeddings=[]
+        array = getExistingSubmissionsArray(partitionId=partitonId,db=db)
         subreddit = await reddit.subreddit(channelName)
-        async for submission in subreddit.new(limit=20):
+        async for submission in subreddit.new(limit=1):
             if submission.id not in array:
                 ids.append(BytesIntEncoder.encode(submission.id))
                 messages.append(submission.title)
-                process_submission(submission=submission,channelId=channelId,channelName=channelName,r=r) ## push message to redis
+                dbmessages.append(process_submission(submission=submission,channelId=channelId,channelName=channelName))
                 logger.info(f'new submision in r/{channelName} with id {submission.id}')
         embeddings = await nlp.embed(messages)
         if collection.has_partition(partitonId):
@@ -56,24 +55,27 @@ async def getNew():
         else:
             collection.create_partition(partitonId)
             mr = collection.insert(data=[ids,embeddings], partition_name=partitonId)
-        print("Record count in collection: " + str(collection.num_entities))
+    db["reddit_messages"].insert_many(dbmessages)
+    logger.info("process finished")
     await reddit.close()
 
-def getExistingSubmissionsArray(channelId,r):
+def getExistingSubmissionsArray(partitionId,db):
     array = []
-    for key in r.scan_iter("*:1"):
-        array.append(key.decode("utf-8")[:6])
-    return array
+    exist = db['reddit_messages'].find({"channel_id":partitionId})
+    ids = [id["reddit_id"] for id in exist]
+    return ids
 
-def process_submission(submission,channelId,channelName,r):
-    r.sadd("channel:{}".format(channelId),submission.id)
-    r.hset("message:{}".format(submission.id),"reddit_id",submission.id)
-    r.hset("message:{}".format(submission.id),"channel_id",channelId)
-    r.hset("message:{}".format(submission.id),"channel_name",channelName)
-    r.hset("message:{}".format(submission.id),"title",submission.title)
-    r.hset("message:{}".format(submission.id),"self_text",submission.selftext)
-    r.hset("message:{}".format(submission.id),"url",submission.url)
-    r.hset("message:{}".format(submission.id),"score",submission.score)
-    r.hset("message:{}".format(submission.id),"date_created",submission.created_utc)
+def process_submission(submission,channelId,channelName):
+    return {
+    "reddit_id":submission.id,
+    "channel_id":channelId,
+    "channel_name":channelName,
+    "title":submission.title,
+    "self_text":submission.selftext,
+    "url":submission.url,
+    "score":submission.score,
+    "date_created": submission.created_utc
+    }
+
 
 
