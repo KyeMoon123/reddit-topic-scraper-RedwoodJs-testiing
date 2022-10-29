@@ -43,9 +43,10 @@ export const Success = ({
 }: CellSuccessProps<FindTopicListQuery, FindTopicListQueryVariables>) => {
   return (
     <div>
+      {console.log(topics)}
       <div className="flex justify-center pt-4 ">
         <NavLink to={routes.newTopic()}>
-          <button className="flex btn btn-secondary btn-outline btn-wide justify-center py-2">
+          <button className="btn btn-outline btn-primary btn-wide flex justify-center py-2">
             Create a new topic
           </button>
         </NavLink>
@@ -56,8 +57,8 @@ export const Success = ({
         return (
           <NavLink
             key={topic.id}
-            className="flex   rounded-sm  p-4 font-semibold text-white hover:bg-primary"
-            activeClassName="bg-primary"
+            className="flex  border-y p-4 font-semibold text-white hover:bg-primary"
+            activeClassName="bg-neutral rounded-lg"
             to={routes.topic({ id: topic.id })}
           >
             {topic.name}

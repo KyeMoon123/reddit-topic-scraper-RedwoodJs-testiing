@@ -4,12 +4,8 @@ import type { FindTopicQuery, FindTopicQueryVariables } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
+import EditTopicButtonGroup from '../EditTopicButtonGroup/EditTopicButtonGroup'
 import LeadsTableCell from '../LeadsTableCell'
-
-interface Props {
-  id: number
-  name: string
-}
 
 export const Loading = () => <div>Loading...</div>
 
@@ -48,10 +44,7 @@ export const Success = ({
             })}
           </Stack>
           <div className="flex space-x-4">
-            <button className="btn btn-primary rounded-md">Edit Topic</button>
-            <button className="btn btn-secondary btn-outline rounded-md">
-              Delete
-            </button>
+            <EditTopicButtonGroup topicId={topic.id} />
           </div>
         </div>
       </div>

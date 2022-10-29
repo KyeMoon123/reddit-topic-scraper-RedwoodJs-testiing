@@ -17,6 +17,7 @@ const Routes = () => {
       <Route path="/" page={HomePage} name="home" />
       <Private unauthenticated="login">
         <Set wrap={DashboardLayout}>
+          <Route path="/edit-topic/{id}" page={EditTopicPage} name="editTopic" />
           <Route path="/new-topic" page={NewTopicPage} name="newTopic" />
           <Route path="/topic/{id}" page={TopicPage} name="topic" />
           <Route path="/dashboard" page={DashboardPage} name="dashboard" />

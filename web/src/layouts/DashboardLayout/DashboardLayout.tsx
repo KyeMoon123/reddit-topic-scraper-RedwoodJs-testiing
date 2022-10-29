@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { userMetadata, isAuthenticated, logIn, logOut } = useAuth()
   return (
     <>
-      <div className="font bold navbar bg-neutral text-white">
+      <div className="font bold navbar bg-primary text-white">
         <a className="btn btn-ghost text-xl normal-case">daisyUI</a>
         <button
           style={{ textTransform: 'none' }}
@@ -26,18 +26,17 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div className="drawer-mobile drawer">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content bg-white px-8 py-8 ">{children}</div>
-        <div className="drawer-side bg-neutral font-semibold text-white">
+        <div className="b drawer-side  bg-black font-semibold text-white">
           <ul className="menu w-80 overflow-y-auto  py-4 text-base-content">
-            <div className=" flex hover: w-80 justify-center rounded-lg bg-secondary ">
+            <div className=" hover: flex w-80 justify-center bg-neutral ">
               <NavLink
                 className="flex w-80 justify-center p-4 font-bold text-white"
-                activeClassName="text-white bg-primary"
+                activeClassName="text-white bg-priamry"
                 to={routes.dashboard()}
               >
                 Dashboard
               </NavLink>
             </div>
-
             <TopicListCell />
           </ul>
         </div>
