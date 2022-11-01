@@ -2824,6 +2824,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@heroicons/react@npm:^2.0.12":
+  version: 2.0.12
+  resolution: "@heroicons/react@npm:2.0.12"
+  peerDependencies:
+    react: ">= 16"
+  checksum: 4133e94871a7c3538d0286929fb1c0c631675554b7fa559dfa88e52c3677dbb30d11464fcae7cf5e4d81b295bc4e0ff41347aaca94d8b5567606e47e3c78aa82
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.10.5":
   version: 0.10.7
   resolution: "@humanwhocodes/config-array@npm:0.10.7"
@@ -20980,6 +20989,7 @@ __metadata:
     "@auth0/auth0-react": ^1.11.0
     "@emotion/react": ^11.10.4
     "@emotion/styled": ^11.10.4
+    "@heroicons/react": ^2.0.12
     "@mui/material": ^5.10.6
     "@redwoodjs/core": ^3.0.1
     "@types/node": ^18.7.2

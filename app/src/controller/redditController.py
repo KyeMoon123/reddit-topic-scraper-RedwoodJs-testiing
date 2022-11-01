@@ -2,7 +2,8 @@ from array import array
 from base64 import decode
 import imp
 from operator import imod
-from fastapi import APIRouter
+from urllib import request
+from fastapi import APIRouter,Request
 
 from ..service.Reddit import getNew
 from ..service.nlp import semanticSearch
@@ -16,8 +17,8 @@ router = APIRouter(
 )
 
 @router.get("/getnew")
-async def get_new():
-    await getNew()
+async def get_new(request: Request):
+    await getNew(request.app)
 
 class Partitions(BaseModel):
     subs: list = [str]
@@ -28,6 +29,6 @@ async def semantic_search(query,partitions:Partitions):
     result = await semanticSearch(query=query, partitions=partitions)
     return result
 
-    
+
 
 
