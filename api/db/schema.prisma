@@ -5,56 +5,71 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:SDKwaz0hOtlUx8qG@db.tgaazjhcwjvpxkzreret.supabase.co:5432/postgres"
-}
-
-model Subreddit {
-  id           Int                 @id @default(autoincrement())
-  channel_name String              @unique
-  ext_id String  @unique
-  search_name String @unique
-  topics       SubredditsOnTopic[]
-}
-
-model Topic {
-  id          Int                  @id @default(autoincrement())
-  name        String
-  description String
-  userId      String
-  subreddits  SubredditsOnTopic[]
-  recommended RecommendedOnTopic[]
-}
-
-model SubredditsOnTopic {
-  id          Int       @id @default(autoincrement())
-  topicId     Int
-  subredditId String
-  subreddit   Subreddit @relation(fields: [subredditId], references: [ext_id])
-  topic       Topic     @relation(fields: [topicId], references: [id])
-
-  @@unique([topicId, subredditId])
+  url      = "postgresql://postgres:NmjdGGOZOSlyFKD1e8iQ@containers-us-west-93.railway.app:7176/railway"
 }
 
 model Recommended {
-  id        Int                  @id @default(autoincrement())
-  reddit_id String
-  channel_name String
-  channel_id String
-  title     String
-  self_text String
-  url       String
-  date_created String
-  score     String
-  topics    RecommendedOnTopic[]
+  id                 Int                  @id @default(autoincrement())
+  score              String
+  title              String
+  url                String
+  channel_id         String
+  channel_name       String
+  date_created       String
+  reddit_id          String
+  self_text          String
+  RecommendedOnTopic RecommendedOnTopic[]
 }
 
 model RecommendedOnTopic {
-  id            Int         @id @default(autoincrement())
-  topicId       Int
-  recommendedId Int
+  id               Int         @id @default(autoincrement())
   date_recommended String
-  recommended   Recommended @relation(fields: [recommendedId], references: [id])
-  topic         Topic       @relation(fields: [topicId], references: [id])
+  recommended_id   Int
+  topic_id         Int
+  Recommended      Recommended @relation(fields: [recommended_id], references: [id])
+  Topic            Topic       @relation(fields: [topic_id], references: [id])
 
-  @@unique([topicId, recommendedId])
+  @@unique([topic_id, recommended_id])
+}
+
+model RedditMessages {
+  id           Int     @id @default(autoincrement())
+  reddit_id    String? @db.VarChar
+  channel_id   String? @db.VarChar
+  channel_name String? @db.VarChar
+  title        String? @db.VarChar
+  self_text    String? @db.VarChar
+  url          String? @db.VarChar
+  score        Int?
+
+  @@index([id], map: "ix_RedditMessages_id")
+}
+
+model Subreddit {
+  id                Int                 @id @default(autoincrement())
+  channel_name      String?             @db.VarChar
+  ext_id            String?             @unique @db.VarChar
+  search_name       String?             @db.VarChar
+  SubredditsOnTopic SubredditsOnTopic[]
+
+  @@index([id], map: "ix_Subreddit_id")
+}
+
+model SubredditsOnTopic {
+  id           Int       @id @default(autoincrement())
+  subreddit_id String
+  topic_id     Int
+  subreddit    Subreddit @relation(fields: [subreddit_id], references: [ext_id])
+  Topic        Topic     @relation(fields: [topic_id], references: [id])
+
+  @@unique([topic_id, subreddit_id])
+}
+
+model Topic {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  description        String
+  userId             String
+  RecommendedOnTopic RecommendedOnTopic[]
+  SubredditsOnTopic  SubredditsOnTopic[]
 }

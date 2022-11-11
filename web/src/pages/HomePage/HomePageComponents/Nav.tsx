@@ -4,7 +4,7 @@ import { useAuth } from '@redwoodjs/auth'
 
 import Logo from '../../../../public/Logo.png'
 export default function Nav() {
-  const { logIn, logOut, isAuthenticated, userMetadata } = useAuth()
+  const { logIn } = useAuth()
   return (
     <div className="navbar bg-base-100 py-4">
       <div className="navbar-start">

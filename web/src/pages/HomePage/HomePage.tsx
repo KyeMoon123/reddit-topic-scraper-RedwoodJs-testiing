@@ -10,7 +10,6 @@ import Nav from './HomePageComponents/Nav'
 import PricingPage from './HomePageComponents/PricingPage'
 
 const HomePage = () => {
-  const { userMetadata, isAuthenticated, logIn, logOut } = useAuth()
   return (
     <>
       <MetaTags title="Home" description="Home page" />
