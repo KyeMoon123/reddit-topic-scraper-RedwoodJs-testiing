@@ -35,7 +35,7 @@ describe('LeadsTableCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success leadsTable={standard().leadsTable} />)
+      render(<Success leadsTable={standard().leadsTable}  recommended={''}/>)
     }).not.toThrow()
   })
 })

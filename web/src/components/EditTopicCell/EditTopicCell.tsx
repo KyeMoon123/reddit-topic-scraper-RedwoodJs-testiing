@@ -1,87 +1,78 @@
-import { Autocomplete, Chip, TextField } from '@mui/material'
-import type {
-  FindEditTopicQuery,
-  FindEditTopicQueryVariables,
-} from 'types/graphql'
-
-import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
+import {gql, useMutation} from '@apollo/client'
+import TopicForm from "src/components/TopicForm/TopicForm";
+import {useAuth} from '@redwoodjs/auth'
+import type {CellSuccessProps, CellFailureProps} from '@redwoodjs/web'
+import * as React from "react";
+import {EditTopicQuery, EditTopicQueryVariables} from "types/graphql";
+import {UPDATE_TOPIC} from "src/utils/Mutations/TopicMutations";
+import {navigate, routes} from "@redwoodjs/router";
 
 export const QUERY = gql`
-  query FindTopicQuery($id: Int!) {
-    topic: topic(id: $id) {
+  query EditTopicQuery($id: Int!) {
+    subreddits {
+      id
+      channel_name
+      ext_id
+    }
+    topic(id: $id) {
       id
       name
       description
     }
     subredditsOnTopic(id: $id) {
       subreddit {
+        id
         channel_name
         ext_id
-        id
-        search_name
       }
     }
   }
 `
-
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
 
-export const Failure = ({
-  error,
-}: CellFailureProps<FindEditTopicQueryVariables>) => (
-  <div style={{ color: 'red' }}>Error: {error?.message}</div>
+export const Failure = ({error}: CellFailureProps) => (
+  <div style={{color: 'red'}}>Error: {error.message}</div>
 )
 
-export const Success = ({
-  topic,
-  subredditsOnTopic,
-}: CellSuccessProps<FindEditTopicQuery, FindEditTopicQueryVariables>) => {
-  const [value, setValue] = React.useState()
+export const Success = ({subreddits, subredditsOnTopic, topic}: CellSuccessProps<EditTopicQuery,EditTopicQueryVariables>) => {
+  const {userMetadata} = useAuth()
+
+  const [subredditsList, setSubredditsList] = React.useState([])
+  const [name, setName] = React.useState<string | undefined>()
+  const [description, setDescription] = React.useState<string | undefined>()
+
+  const [UpdateTopic] = useMutation<{input: UpdateTopicInput}>
+  (UPDATE_TOPIC,{variables:{
+      id: topic.id,
+      input:{
+        name:name,
+        description:description,
+        userId: userMetadata.sub,
+        subreddits: subredditsList.map(sub=>sub.id)
+      }
+    }})
+
+  const handleSubmit=()=>{
+    UpdateTopic().then(() => navigate(routes.dashboard()))
+  }
   return (
-    <div className="  flex flex-col space-y-7">
-      <input
-        type="text"
-        className="input input-bordered input-primary w-full max-w-xs"
-        value={topic.name}
-      />
-      <input
-        type="text"
-        placeholder="Type here"
-        className="input input-bordered input-primary w-full max-w-xs"
-        value={topic.description}
-      />
-      {console.log(subredditsOnTopic)}
-      <Autocomplete
-        value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue)
-        }}
-        multiple
-        id="tags-filled"
-        options={subredditsOnTopic}
-        getOptionLabel={(option) => option.channel_name}
-        freeSolo
-        renderTags={(value: object[], getTagProps) =>
-          value.map((option: object, index: number) => (
-            <Chip
-              key={index}
-              variant="outlined"
-              label={option.channel_name}
-              {...getTagProps(index)}
-            />
-          ))
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            label="Subreddits"
-            placeholder="Search for a subreddit"
-          />
-        )}
-      />
+    <>
+    <div className="flex space-x-4">
+      <h1 className=" text-6xl font-extrabold">Edit Topic: </h1>
+      <h1 className=" text-6xl font-extrabold text-secondary">{topic.name} </h1>
     </div>
+      <TopicForm
+        subreddits={subreddits}
+        subredditsOnTopic={subredditsOnTopic}
+        setName={setName}
+        setSubredditsList={setSubredditsList}
+        setDescription={setDescription}
+        handleSubmit={handleSubmit}
+        action={"edit"}
+        topic={topic}
+      />
+    </>
   )
 }

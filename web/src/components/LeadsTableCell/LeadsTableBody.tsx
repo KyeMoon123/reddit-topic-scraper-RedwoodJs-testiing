@@ -2,16 +2,12 @@ import * as React from 'react'
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import { Button } from '@mui/material'
-import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import dayjs from 'dayjs'
-
-import { Link } from '@redwoodjs/router'
 
 export function createData(
   title: string,
@@ -88,7 +84,7 @@ export const LeadsTableBody = ({ recommended }) => {
     return createData(
       msg.recommended.title,
       msg.recommended.channel_name,
-      dayjs.unix(msg.recommended.date_created).format('DD/MM/YYYY'),
+      dayjs(msg.recommended.date_created).format('DD/MM/YYYY'),
       msg.recommended.self_text,
       msg.recommended.url
     )

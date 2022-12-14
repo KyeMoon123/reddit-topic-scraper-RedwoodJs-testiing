@@ -1,9 +1,11 @@
 import { routes, Link } from '@redwoodjs/router'
 
-export const UpdateTopicButton = ({ topicId }): JSX.Element => {
+export interface UpdateButtonProps{
+  topicId: number
+}
+export const UpdateTopicButton = ({ topicId }:UpdateButtonProps): JSX.Element => {
   return (
     <div>
-      {console.log(topicId)}
       <Link className="" to={routes.editTopic({ id: topicId })}>
         <button className="btn btn-primary rounded-md">Edit Topic</button>
       </Link>

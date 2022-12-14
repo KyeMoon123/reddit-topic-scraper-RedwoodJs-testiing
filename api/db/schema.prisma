@@ -5,42 +5,31 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:NmjdGGOZOSlyFKD1e8iQ@containers-us-west-93.railway.app:7176/railway"
-}
-
-model Recommended {
-  id                 Int                  @id @default(autoincrement())
-  score              String
-  title              String
-  url                String
-  channel_id         String
-  channel_name       String
-  date_created       String
-  reddit_id          String
-  self_text          String
-  RecommendedOnTopic RecommendedOnTopic[]
+  url      = "postgresql://postgres:Tqd01UzTFfRCmOXrbCNt@containers-us-west-119.railway.app:7272/railway"
 }
 
 model RecommendedOnTopic {
-  id               Int         @id @default(autoincrement())
-  date_recommended String
-  recommended_id   Int
+  id               Int            @id @default(autoincrement())
+  date_recommended DateTime       @default(now())
+  recommended_id   String
   topic_id         Int
-  Recommended      Recommended @relation(fields: [recommended_id], references: [id])
-  Topic            Topic       @relation(fields: [topic_id], references: [id])
+  score            Float
+  recommended      RedditMessages? @relation(fields: [recommended_id], references: [reddit_id], onDelete:Cascade, onUpdate:Cascade)
+  topic            Topic?          @relation(fields: [topic_id], references: [id], onDelete:Cascade, onUpdate:Cascade)
 
   @@unique([topic_id, recommended_id])
 }
 
 model RedditMessages {
-  id           Int     @id @default(autoincrement())
-  reddit_id    String? @db.VarChar
-  channel_id   String? @db.VarChar
-  channel_name String? @db.VarChar
-  title        String? @db.VarChar
-  self_text    String? @db.VarChar
-  url          String? @db.VarChar
-  score        Int?
+  id                 Int                  @id @default(autoincrement())
+  reddit_id          String?              @db.VarChar @unique
+  channel_id         String?              @db.VarChar
+  channel_name       String?              @db.VarChar
+  title              String?              @db.VarChar
+  self_text          String?              @db.VarChar
+  url                String?              @db.VarChar
+  score              Int?
+  RecommendedOnTopic RecommendedOnTopic[]
 
   @@index([id], map: "ix_RedditMessages_id")
 }
@@ -59,8 +48,8 @@ model SubredditsOnTopic {
   id           Int       @id @default(autoincrement())
   subreddit_id String
   topic_id     Int
-  subreddit    Subreddit @relation(fields: [subreddit_id], references: [ext_id])
-  Topic        Topic     @relation(fields: [topic_id], references: [id])
+  subreddit    Subreddit? @relation(fields: [subreddit_id], references: [ext_id], onDelete:Cascade, onUpdate:Cascade)
+  Topic        Topic?     @relation(fields: [topic_id], references: [id],onDelete:Cascade, onUpdate:Cascade)
 
   @@unique([topic_id, subreddit_id])
 }

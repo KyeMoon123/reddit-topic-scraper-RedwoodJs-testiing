@@ -1,5 +1,5 @@
-import { Loading, Empty, Failure, Success } from './NewTopicDialogCell'
-import { standard } from './NewTopicDialogCell.mock'
+import { Loading, Empty, Failure, Success } from './NewTopicCell'
+import { standard } from './NewTopicCell.mock'
 
 export const loading = (args) => {
   return Loading ? <Loading {...args} /> : null

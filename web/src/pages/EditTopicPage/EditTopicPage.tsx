@@ -1,7 +1,6 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import EditTopicCell from '../../components/EditTopicCell/EditTopicCell'
+import EditTopicCell from "src/components/EditTopicCell/EditTopicCell";
 interface Props {
   id: string
 }

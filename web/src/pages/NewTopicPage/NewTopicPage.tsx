@@ -1,16 +1,16 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import NewTopicDialogeCell from '../../components/NewTopicDialogCell/NewTopicDialogCell'
-
+// @ts-ignore
+import NewTopicCell from "../../components/NewTopicCell/NewTopicCell"
 const NewTopicPage = () => {
   return (
     <>
       <MetaTags title="NewTopic" description="NewTopic page" />
-
-      <NewTopicDialogeCell />
+      <NewTopicCell />
     </>
   )
 }
 
 export default NewTopicPage
+
+

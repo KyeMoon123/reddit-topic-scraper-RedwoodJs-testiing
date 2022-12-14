@@ -1,6 +1,7 @@
 import { render } from '@redwoodjs/testing/web'
-import { Loading, Empty, Failure, Success } from './TopicsAccordionCell'
-import { standard } from './TopicsAccordionCell.mock'
+
+import { Loading, Empty, Failure, Success } from './NewTopicCell'
+import { standard } from './NewTopicCell.mock'
 
 // Generated boilerplate tests do not account for all circumstances
 // and can fail without adjustments, e.g. Float and DateTime types.
@@ -8,7 +9,7 @@ import { standard } from './TopicsAccordionCell.mock'
 //        https://redwoodjs.com/docs/testing#testing-cells
 // https://redwoodjs.com/docs/testing#jest-expect-type-considerations
 
-describe('TopicsAccordionCell', () => {
+describe('SubredditsCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)
@@ -35,7 +36,7 @@ describe('TopicsAccordionCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success topicsAccordion={standard().topicsAccordion} />)
+      render(<Success subreddits={standard().subreddits} />)
     }).not.toThrow()
   })
 })

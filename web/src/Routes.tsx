@@ -7,6 +7,7 @@
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 import { Router, Route, Private, Set } from '@redwoodjs/router'
+import {TopicProvider} from "../providers/context/TopicsContext";
 
 import DashboardLayout from 'src/layouts/DashboardLayout'
 
@@ -16,11 +17,13 @@ const Routes = () => {
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/" page={HomePage} name="home" />
       <Private unauthenticated="login">
-        <Set wrap={DashboardLayout}>
-          <Route path="/edit-topic/{id}" page={EditTopicPage} name="editTopic" />
-          <Route path="/new-topic" page={NewTopicPage} name="newTopic" />
-          <Route path="/topic/{id}" page={TopicPage} name="topic" />
-          <Route path="/dashboard" page={DashboardPage} name="dashboard" />
+        <Set wrap={TopicProvider}>
+          <Set wrap={[DashboardLayout]}>
+            <Route path="/edit-topic/{id}" page={EditTopicPage} name="editTopic" />
+            <Route path="/new-topic" page={NewTopicPage} name="newTopic" prerender />
+            <Route path="/topic/{id}" page={TopicPage} name="topic" />
+            <Route path="/dashboard" page={DashboardPage} name="dashboard" prerender />
+          </Set>
         </Set>
       </Private>
       <Route notfound page={NotFoundPage} />
