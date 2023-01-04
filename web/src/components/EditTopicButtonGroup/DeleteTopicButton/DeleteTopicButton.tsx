@@ -24,7 +24,7 @@ export const DeleteTopicButton = ({topicId}:DeleteButtonProps):JSX.Element => {
     <div>
       <label
         htmlFor="my-modal-3"
-        className="btn btn-outline btn-primary rounded-md"
+        className="btn btn-outline  btn-primary rounded-md"
       >
         Delete
       </label>

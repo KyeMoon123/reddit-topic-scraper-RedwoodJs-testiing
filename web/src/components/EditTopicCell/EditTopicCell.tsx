@@ -3,7 +3,7 @@ import TopicForm from "src/components/TopicForm/TopicForm";
 import {useAuth} from '@redwoodjs/auth'
 import type {CellSuccessProps, CellFailureProps} from '@redwoodjs/web'
 import * as React from "react";
-import {EditTopicQuery, EditTopicQueryVariables} from "types/graphql";
+import {EditTopicQuery, EditTopicQueryVariables, UpdateTopicInput} from "types/graphql";
 import {UPDATE_TOPIC} from "src/utils/Mutations/TopicMutations";
 import {navigate, routes} from "@redwoodjs/router";
 

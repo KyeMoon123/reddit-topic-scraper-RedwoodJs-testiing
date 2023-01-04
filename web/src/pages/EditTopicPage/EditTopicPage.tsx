@@ -1,5 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
-
+// @ts-ignore
 import EditTopicCell from "src/components/EditTopicCell/EditTopicCell";
 interface Props {
   id: string

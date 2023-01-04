@@ -15,13 +15,13 @@ const TopicsTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <table className="table w-full bg-white">
+      <table className="table w-full table-zebra ">
         <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Subreddits</th>
-          <th className={'flex justify-end'}>Actions</th>
+        <tr className={'text-white'}>
+          <th className={'bg-neutral'}>Name</th>
+          <th className={'bg-neutral'}>Description</th>
+          <th className={'bg-neutral'}>Subreddits</th>
+          <th className={'flex justify-end bg-neutral'}>Actions</th>
         </tr>
         </thead>
         <tbody>
