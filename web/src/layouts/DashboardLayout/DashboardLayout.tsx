@@ -4,7 +4,6 @@ import Logo from '../../../public/Logo.png'
 // @ts-ignore
 import TopicListCell from 'src/components/TopicListCell/TopicListCell'
 import TopicList from "src/components/TopicList/TopicList";
-import {useTopicsContext} from "../../../providers/context/TopicsContext";
 
 type DashboardLayoutProps = {
   children?: React.ReactNode
@@ -13,7 +12,6 @@ type DashboardLayoutProps = {
 const DashboardLayout = ({children}: DashboardLayoutProps) => {
   const {userMetadata, isAuthenticated, logIn, logOut} = useAuth()
   const [name] = userMetadata.email.toString().split("@")
-  const context = useTopicsContext()
   return (
     <>
       <div></div>
@@ -52,10 +50,10 @@ const DashboardLayout = ({children}: DashboardLayoutProps) => {
                   </button>
                 </Link>
               </div>
-              <TopicList topics={context.topics} />
+              <TopicList />
             </ul>
             <div className={"divider"}></div>
-            <h3 className={'px-4 py-2 text-sm text-secondary'}> Hi {name} </h3>
+            <h3 className={'px-5 py-2 text-sm text-white'}> Hi {name} </h3>
             <div className=' flex  justify-center py-4 mb-4'>
               <button
                 style={{textTransform: 'none'}}
@@ -65,9 +63,7 @@ const DashboardLayout = ({children}: DashboardLayoutProps) => {
                 {isAuthenticated ? 'Log Out' : 'Log In'}
               </button>
             </div>
-
           </div>
-
         </div>
       </div>
 

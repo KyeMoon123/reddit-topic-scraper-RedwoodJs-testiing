@@ -51,10 +51,10 @@ const Row = (props: { row: ReturnType<typeof createData> }) => {
         <TableCell align="right">
           <div className="flex justify-center space-x-5">
             <a href={row.url} target="_blank" rel="noreferrer">
-              <button className=" btn btn-primary rounded-md">Visit</button>
+              <button className=" btn btn-primary btn-sm rounded-md">Visit</button>
             </a>
-            <button className="btn btn-outline btn-primary rounded-md">
-              Remove
+            <button className="btn btn-outline btn-sm btn-accent btn-square">
+             X
             </button>
           </div>
         </TableCell>
